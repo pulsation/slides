@@ -1,2 +1,9 @@
 .bundle/
 Gemfile.lock
+*.gem
+*.rbc
+
+/codeworld/.bundle/
+/codeworld/vendor/bundle
+/codeworld/lib/bundler/man/
+/codeworld/.asciidoctor

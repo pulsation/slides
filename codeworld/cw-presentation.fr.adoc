@@ -1,0 +1,161 @@
+// Rendering : `bundle exec asciidoctor-revealjs cw-presentation.adoc`
+// Serve : `ruby -run -e httpd . -p 5000 -b 0.0.0.0`
+
+:revealjs_theme: solarized
+:source-highlighter: highlightjs
+
+= CodeWorld
+
+== whoami
+
+* backend developer @ Lizeo
+* @pulsati0n
+
+[NOTE.speaker]
+--
+Moteur rezulteo : trouver un pneu qui va à votre auto comme un gant.
+Site vitrine de Lizeo : analyse de données techniques et commerciales sur les pneus.
+--
+
+== Les outils traditionnels
+
+=== Il y a bien longtemps
+
+// possibilité d'utiliser http://robhagemans.github.io/pcbasic/
+
+```basic
+  5 CLS
+  30 INPUT "Combien d'étoiles voulez-vous "; NOMBRE
+  40 FOR I = 1 TO NOMBRE
+  50 ETOILE$ = ETOILE$ + "*"
+  55 NEXT I
+  60 PRINT ETOILE$
+  70 INPUT "Voulez-vous plus d'étoiles "; ETOILE$
+  80 IF LEN(ETOILE$) = 0 THEN GOTO 70
+  90 ETOILE$ = LEFT$(ETOILE$, 1)
+  100 IF (ETOILE$ = "O") OR (ETOILE$ = "o") THEN GOTO 30
+```
+
+[NOTE.speaker]
+--
+Ici je force le trait pour une certaine vision de la programmation.
+--
+
+=== Aujourd'hui
+
+// Exemple : scratch
+// https://www.gameseducatekids.com/games/coddy_world_on_algorithm 
+A la place des `goto` on a des téléporteurs. Cependant le principe
+d'exécution séquentielle reste le même (le petit robot sert de
+pointeur d'instruction)
+
+=== Une autre approache
+
+* Utiliser le paradigme fonctionnel
+* Apporter un côté ludique aux maths
+
+=== Des maths créatives
+
+// Selon L'auteur principal Il est possible de pratiquer la plupart des disciplines de façon
+// ludique. Pourquoi pas les maths? 
+// A ce stade, le plus souvent il s'agit de tables de multiplications, ...
+
+// == Qu'est-ce-que c'est
+
+// === Une plateforme pour apprendre à coder
+
+// === Une question de principes
+
+=== Se démarquer de la machine
+
+* Plutot de d'utiliser des pixels, utiliser une echelle entre 0 et 10 plus facile a manipuler pour les plus petits. 
+Cela permet éventuellement d'introduire les nombres a virgule.
+* Plutot que de faire debuter le plan de coordonnes en bas a gauche, le faire debuter au milieu (comme en géométrie). 
+  + image du coordinate plane
+* Pour bien montrer que les définitions ne sont pas séquentielles, le dernier element est situe au dessous.
+
+== Utilisation
+
+// Image avec les différents panneaux : 
+// * Editeur de texte (expliciter les possibilités)
+// Canevas
+// Fenêtre d'erreurs / warnings
+
+=== Notions
+
+=== Expression
+
+Combiner des symboles
+```haskell
+x + 1
+```
+
+=== Définition
+
+Donner un nom à une expression
+```haskell
+increment(x) = x + 1
+```
+
+[NOTE.speaker]
+--
+Il s'agit autrement dit de la définition d'une fonction.
+Anecdote : pour expliquer ce qu'est une fonction :
+Pour un élément donné, évoquer le résultat - on doit
+deviner quelle est la transformation effectuée. (voire,
+indiquer si le type n'est pas correct)
+--
+
+// Image de Los Mamphos?
+
+=== Type
+
+De quoi on parle, quelle est la nature de ce qu'on manipule?
+
+```haskell
+five :: Number = 5
+
+alphaOmega :: Text
+alphaOmega = "αω"
+
+increment :: Number -> Number
+increment(x) = x + 1
+```
+
+[NOTE.speaker]
+--
+Pas de possibilité de créer des types dans CodeWorld.
+--
+
+=== Principaux types disponibles
+
+Program
+Picture
+Color
+Number
+Text
+
+```haskell
+program :: Program = drawingOf(triangle)
+height :: Number = 2
+triangle :: Picture = polygon([(-1, 0), (1, 0), (0, height)])
+```
+
+// redTriangle?
+
+=== Tableaux
+
+```haskell
+oneTwoThree :: [Number]
+oneTwoThree = [1, 2, 3]
+```
+
+// TODO : esperluette
+
+=== Dessin
+
+=== Animation
+
+=== Fonctionne aussi en haskell
+
+== Comment c'est fait

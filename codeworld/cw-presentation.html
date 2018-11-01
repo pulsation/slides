@@ -1,0 +1,334 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>CodeWorld</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/serif.css" id="theme"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+tex2jax: {
+  inlineMath: [["\\(", "\\)"]],
+  displayMath: [["\\[", "\\]"]],
+  ignoreClass: "nostem|nolatexmath"
+},
+asciimath2jax: {
+  delimiters: [["\\$", "\\$"]],
+  ignoreClass: "nostem|noasciimath"
+},
+TeX: { equationNumbers: { autoNumber: "none" } }
+});</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.4.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "reveal.js/css/print/pdf.css" : "reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="reveal.js/lib/js/html5shiv.js"></script><![endif]--></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>CodeWorld</h1><div class="preamble"><aside class="notes"><div class="paragraph"><p>Une plateforme d&#8217;initiation à la programmation informatique
+basée sur la programmation fonctionnelle, dans laquelle il
+est possible de créer des dessins.
+(un peu comme scratch)</p></div></aside></div></section>
+<section id="whoami"><h2>whoami</h2><div class="ulist"><ul><li><p>développeur &#8288;backend &#8288;@ &#8288;Lizeo</p></li><li><p>@pulsati0n</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Le comparateur de prix rezulteo est un comparateur de pneus en ligne
+qui permet de trouver des pneus qui vont à votre auto comme des gants.
+Il prend en compte votre style de conduite via entre autre de l&#8217;analyse
+du langage naturel.</p></div>
+<div class="paragraph"><p>Cependant, Lizeo est bien plus que ça : la partie b2b propose des offres
+techniques et commerciales d&#8217;analyse de données, en particulier pour les
+pneus.</p></div></aside></section>
+<section id="de_quoi_allons_nous_parler"><h2>De quoi allons-nous parler?</h2><div class="ulist"><ul><li><p>Les outils "traditionnels"</p></li><li><p>Une approche différente</p></li><li><p>utiliser CodeWorld</p></li><li><p>Comment ça fonctionne</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Approche différente dans le sens où on utilise de la programmation
+fonctionnelle, avec des notions simples (pas de monades par exemple).</p></div></aside></section>
+<section><section id="les_outils_traditionnels"><h2>Les outils "traditionnels"</h2></section><section id="il_y_a_trs_trs_longtemps"><h2>Il y a très, très longtemps</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="basic language-basic">5 CLS
+30 INPUT "How many stars do you want?"; NUMBER
+40 FOR I = 1 TO NUMBER
+50 STAR$ = STAR$ + "*"
+55 NEXT I
+60 PRINT STAR$
+70 INPUT "Do you want more stars "; STAR$
+80 IF LEN(STAR$) = 0 THEN GOTO 70
+90 STAR$ = LEFT$(STAR$, 1)
+100 IF (STAR$ = "Y") OR (STAR$ = "y") THEN GOTO 30</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Cet exemple est issu de Wikipedia.</p></div>
+<div class="paragraph"><p>Il représente une certaine vision de la programmation : chaque
+ligne est exécutée l&#8217;une après l&#8217;autre dans l&#8217;ordre.</p></div>
+<div class="paragraph"><p>Les numéros de ligne mettent en avant le côté séquentiel des instructions.
+<code>STAR$</code> est une variable qui est réassignée avec un contenu qui n&#8217;a
+rien à voir avec ce qu&#8217;elle doit contenir ; l&#8217;exécution du programme
+dépend de son état.</p></div></aside></section><section id="aujourdhui"><h2>Aujourd&#8217;hui</h2><div class="imageblock" style=""><img src="images/scratch-example.png" alt="scratch" width="750" height="550"></div>
+<aside class="notes"><div class="paragraph"><p>Scratch est un environnement d&#8217;initiation au code bien répandu. On
+peut observer ici que les instructions sont ici aussi exécutées
+de façon séquentielle à l&#8217;intérieur du premier repeat, et que la
+variable <code>touching</code> est écrasée.</p></div></aside></section><section id="aujourdhui_2"><h2>Aujourd&#8217;hui</h2><div class="imageblock" style=""><img src="images/coddy.png" alt="coddy"></div>
+<aside class="notes"><div class="paragraph"><p>Même si l&#8217;instruction <code>goto</code> a quelque part été remplacée dans Coddy par
+des téléporteurs, le principe reste le même (l&#8217;exécution séquentielle
+d&#8217;une série d&#8217;instructions, le robot représentant un pointeur
+d&#8217;instruction).</p></div>
+<div class="paragraph"><p>Si en effet un ordinateur exécute le code de cette façon, les
+langages aujourd&#8217;hui ont évolué. Plutôt que d&#8217;adapter les
+humains aux machines, pourquoi ne pas inverser les rôles
+et adapter la machine à un langage plus humain?</p></div></aside></section><section id="une_approche_diffrente"><h2>Une approche différente</h2><div class="ulist"><ul><li><p>S&#8217;appuyer sur le paradigme fonctionnel</p></li><li><p>Évaluer des fonctions plutôt qu&#8217;exécuter des séquences d&#8217;instructions</p></li><li><p>Éviter les données mutables</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Les enfants étant des humains et pas des machines, il est possible
+d&#8217;envisager une approche différente: au lieu de tenter de penser comme
+des machines, tâche pour laquelle elles sont sans aucun doute bien
+meilleures que nous, nous allons exprimer nos programmes avec quelque
+chose de plus humain. Les mathématiques algébriques sont en effet un bon
+outil de modélisation utilisé depuis l&#8217;antiquité.</p></div></aside></section><section id="codeworld_cest_quoi"><h2>CodeWorld, c&#8217;est quoi</h2><div class="ulist"><ul><li><p>Origine : Haskell for kids</p></li><li><p>Des maths :</p><div class="ulist"><ul><li><p>Sans langage intermédiaire</p></li><li><p>Créatives</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>L&#8217;auteur principal de CodeWorld est Chris Smith, ingénieur de développement
+chez Google. Il est aussi professeur de mathématiques et d&#8217;informatique
+volontaire à ses heures perdues.</p></div>
+<div class="paragraph"><p>L&#8217;une des volontés qu&#8217;il affiche - en particulier lors des différentes
+présentations qu&#8217;il a données - est de fournir un outil
+qui rende les mathématiques plus accessibles et plus sympathiques aux
+enfants.</p></div>
+<div class="paragraph"><p>En effet, apprendre des tables de multiplications n&#8217;est pas particulièrement
+agréable ny sympa - ni créatif.</p></div>
+<div class="paragraph"><p>Il insiste aussi sur l&#8217;expressivité : certains jeux comme Coddy proposent
+de résoudre des puzzles, mais laissent peu de choix.</p></div></aside></section><section id="pourquoi_haskell"><h2>Pourquoi Haskell</h2><div class="stemblock"><div class="content">\$f(x) = {(x^2|x&lt;0),(x^3|x&gt;=0):}\$</div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="cpp language-cpp">// En C
+double f(double x) {
+  if (x &lt; 0) return pow(x, 2);
+  else return pow(x, 3);
+}</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">-- En Haskell
+f(x) | x &lt;  0  = x^2
+     | x &gt;= 0  = x^3</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Voici un exemple de notation mathématique. L&#8217;équivalent en C demande
+une transcription ; Haskell reste de façon générale le plus proche
+des maths. (d&#8217;autres exemples sont disponibles dans les présentations
+de Chris Smith)</p></div></aside></section><section id="nous_ne_sommes_pas_encore_des_machines"><h2>Nous ne sommes pas (encore) des machines</h2><div class="ulist"><ul><li><p>Une échelle de 0 à 10 plutôt que des pixels</p></li><li><p>Des définitions non séquentielles (dictionnaire)</p></li><li><p>Origine des coordonnées au centre de l&#8217;écran</p></li><li><p>X est l&#8217;axe horizontal</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Le nombre de pixels n&#8217;est pas évident à gérer pour de jeunes enfants.
+Dans un dictionnaire, les mots ne sont pas définis dans l&#8217;ordre
+de leur utilisation : on peut utiliser un autre mot qu&#8217;il soit situé
+avant ou après.
+Enfin, pour mettre en avant le fait qu&#8217;il n&#8217;y a pas forcément d&#8217;ordre
+séquentiel, le dernier élément est celui qui est affiché le plus en
+dessous.</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">program = drawingOf(coordinatePlane)</code></pre></div></div></aside></section></section>
+<section><section id="utiliser_codeworld"><h2>Utiliser CodeWorld</h2></section><section id="quoi_a_ressemble"><h2>À quoi ça ressemble</h2><div class="imageblock" style=""><img src="images/codeworld-warning.png" alt="warning" width="750" height="550"></div>
+<aside class="notes"><div class="paragraph"><p>Il y a trois parties principales :</p></div>
+<div class="ulist"><ul><li><p>Sur la gauche, un éditeur de texte qui permet de rentrer du code.</p></li><li><p>En haut à droite, un canevas qui affiche le résultat de l&#8217;exécution
+du programme.</p></li><li><p>En bas à droite, les erreurs et informations.</p></li></ul></div>
+<div class="paragraph"><p>Un autre panneau propose de l&#8217;aide (les boutons bleus). Il est
+possible de sauvegarder des programmes, de les partager, et
+d&#8217;enregistrer des vidéos.</p></div>
+<div class="paragraph"><p>Des formes géométriques basiques sont manipulées et transformées,
+afin de faire des dessins.</p></div></aside></section><section id="quoi_a_ressemble_2"><h2>À quoi ça ressemble</h2><div class="imageblock" style=""><img src="images/codeworld-error.png" alt="error" width="750" height="550"></div></section><section id="formes_gomtriques"><h2>Formes géométriques</h2><div class="ulist"><ul><li><p><code>circle(Number)</code></p></li><li><p><code>rectangle(Number, Number)</code></p></li><li><p><code>polygon([Point])</code></p></li><li><p>Formes pleines</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Il y a bien plus de formes disponibles, mais celles-ci suffiront pour
+faire des dessins basiques.</p></div></aside></section><section id="transformations"><h2>Transformations</h2><div class="ulist"><ul><li><p>Ajouter de la couleur</p></li><li><p>Déplacer</p></li><li><p>Faire pivoter</p></li><li><p>Agrandir / réduire</p></li><li><p>Combiner (<code>&amp;</code>)</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>colored :: (Picture, Color) &#8594; Picture</p></li><li><p>translated :: (Picture, Number, Number) &#8594; Picture</p></li><li><p>rotated :: (Picture, Number) &#8594; Picture</p></li><li><p>dilated :: (Picture, Number) &#8594; Picture</p></li></ul></div>
+<div class="paragraph"><p>Il y a quelques synonymes (par exemple, les écritures américaines et
+anglaises de coloured). Cependant, il n&#8217;existe pas à ce jour de version
+francisée.</p></div></aside></section><section id="quelques_notions"><h2>Quelques notions</h2><div class="ulist"><ul><li><p>Expressions</p></li><li><p>Définitions</p></li><li><p>Fonctions</p></li><li><p>Types</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Voici quelques notions basiques que nous allons pouvoir utiliser
+avec CodeWorld. Nous allons les décrire plus précisément dans les
+diapositives qui vont suivre.</p></div></aside></section><section id="expression"><h2>Expression</h2><div class="paragraph"><p>Une combinaison de symboles:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">7 + 2
+x + 1</code></pre></div></div></section><section id="dfinition"><h2>Définition</h2><div class="paragraph"><p>Donner un nom à une expression:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">nine = 7 + 2
+increment(x) = x + 1</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>C&#8217;est de cette façon que les fonctions sont définies : elles sont
+citoyennes à part entière du langage.</p></div>
+<div class="paragraph"><p>Une fonction prend un ou plusieurs paramètres en entrée. Substituer
+ces paramètres par les valeurs transmises lors de sont appel permet
+de l&#8217;appliquer.</p></div></aside></section><section id="ceci_est_une_pole"><h2>Ceci est une poêle</h2><div class="imageblock" style=""><img src="images/frying-pan.jpg" alt="Poêle à frire"></div>
+<aside class="notes"><div class="paragraph"><p>On peut voir une fonction comme une poêle à frire.
+En effet, le nom de la fonction correspondrait au
+manche de la poêle et les paramètres aux ingrédients.
+Faites chauffer à feu doux, et au bout de quelques
+temps on obtient le résultat : une délicieuse
+omelette :p</p></div></aside></section><section id="la_machine_mystre"><h2>La machine mystère</h2><div class="imageblock" style=""><img src="images/macau-mystery-soda.jpg" alt="Machine mystère" width="450" height="550"></div>
+<aside class="notes"><div class="paragraph"><p>Une autre possibilité de petit jeu est de demander
+aux enfants de deviner une fonction qu&#8217;on a imaginée :
+à chaque "entrée", on lui donne le résultat.
+On peut même introduire la notion de type: par exemple,
+<code>f(x) = x * 2</code> ne pourrait pas prendre <code>abricot</code> en
+entrée.</p></div></aside></section><section id="type"><h2>Type</h2><div class="paragraph"><p>Qu&#8217;est-ce qui est manipulé? De quoi on parle?</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">five :: Number = 5
+
+alphaOmega :: Text
+alphaOmega = "αω"
+
+increment :: Number -&gt; Number
+increment(x) = x + 1</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Par exemple, dans un dictionnaire, le type de chaque définition
+pourrait être sa "nature" (adjectif, nom, adverbe&#8230;&#8203;)</p></div>
+<div class="paragraph"><p>On ne peut pas vraiment créer de type dans CodeWorld (simplement
+des enregistrement <code>data type</code>)</p></div></aside></section><section id="quelques_types"><h2>Quelques types</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">program :: Program = drawingOf(lettering(helloWorld)
+                   &amp; redTriangle)
+height :: Number = 2
+points :: [Point] = [(-1, 0), (1, 0), (0, height)]
+triangle :: Picture = solidPolygon(points)
+lightRed :: Color = RGB(1, 0.6, 0.6)
+redTriangle :: Picture = colored(triangle, lightRed)
+helloWorld :: Text = "Hello, world!"</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Voici un exemple de dessin.
+Tous les types disponibles sont décrits dans la référence.
+Voici quelques exemples. Les types sont utiles au moins pour
+documenter ce qui est manipulé. Le <code>&amp;</code> commercial signifie
+"et" ou "par dessus".</p></div></aside></section></section>
+<section><section id="prise_en_main"><h2>Prise en main</h2></section><section id="exemple_rel"><h2>Exemple réel</h2></section><section id="dessiner"><h2>Dessiner</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape>program :: Program = drawingOf(wagon)
+wagon :: Picture = wheels &amp; container
+container :: Picture = rectangle(5, 2)
+wheel :: Picture = solidCircle(1)
+rightWheel :: Picture = translated(wheel, 1.5, -1)
+leftWheel :: Picture = translated(wheel, -1.5, -1)
+wheels :: Picture = leftWheel &amp; rightWheel</code></pre></div></div></section><section id="lditeur"><h2>L&#8217;éditeur</h2><div class="ulist"><ul><li><p>Le bouton <strong>Editor</strong> affiche les raccourcis</p></li><li><p>Autocomplétion (ctrl+space)</p></li><li><p>Rainbow brackets</p></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Les enfants peuvent avoir du mal à taper des mots longs
+et complexes : l&#8217;autocomplétion est bien pratique.</p></li><li><p>Les rainbow brackets peuvent aider à trouver qu&#8217;est
+ce qui est clos par quoi.</p></li></ul></div></aside></section><section id="animer"><h2>Animer</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape>program :: Program = animationOf(movingWagon)
+[...]
+movingWagon(time) = translated(wagon, time, 0)</code></pre></div></div></section><section id="haskell"><h2>Haskell</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="haskell language-haskell">import CodeWorld
+main :: IO ()
+main = drawingOf(wagon)
+wagon :: Picture
+wagon = wheels &amp; container
+container :: Picture
+container = rectangle 5 2
+wheel :: Picture
+wheel = solidCircle 1
+rightWheel :: Picture
+rightWheel = translated 1.5 (-1.0) wheel
+leftWheel :: Picture
+leftWheel = translated (-1.5) (-1.0) wheel
+wheels :: Picture
+wheels = leftWheel &amp; rightWheel</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>CodeWorld peut aussi être utilisé avec du
+haskell : cela permet de migrer progressivement
+vers un langage du monde "réel". La plupart
+des extensions sont disponibles, par exemple:</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape>{-# LANGUAGE UndecidableInstances #-}</code></pre></div></div></aside></section></section>
+<section><section id="dboguer"><h2>Déboguer</h2><div class="ulist"><ul><li><p>Afficher l&#8217;axe de coordonnées</p></li><li><p>Inspection</p></li><li><p>Zoom</p></li><li><p>Voyager dans le temps</p></li></ul></div><aside class="notes"><div class="paragraph"><p>Le plan de coordonnées peut aider à trouver
+quelles coordonnées sont incorrectes.</p></div></aside></section><section id="mode_inspection"><h2>Mode inspection</h2><div class="imageblock" style=""><img src="images/codeworld-debug-inspector.png" alt="debug inspector" width="800" height="550"></div>
+<aside class="notes"><div class="paragraph"><p>Le mode inspection permet de naviguer dans la hiérarchie
+des objets, et d&#8217;afficher leurs paramètres.</p></div></aside></section><section id="zoom"><h2>Zoom</h2><div class="imageblock" style=""><img src="images/codeworld-debug-panel.png" alt="debug panel" width="800" height="550"></div>
+<aside class="notes"><div class="paragraph"><p>Zoomer et dézoomer peut être pratique pour afficher les
+objets situés hors du canevas.</p></div></aside></section><section id="voyager_dans_le_temps"><h2>Voyager dans le temps</h2><div class="imageblock" style=""><img src="images/codeworld-debug-simulation.png" alt="debug simulation"></div>
+<aside class="notes"><div class="paragraph"><p>disponible avec <code>debugActivityOf' (`simulationOf</code> est déprécié).
+Une activité est une animation représentée par une série d&#8217;étapes.
+Le temps qui avance petit à petit produit un certain nombre
+d&#8217;étapes (événements).</p></div>
+<div class="paragraph"><p>Chacune de ces étapes peut influer sur l&#8217;état du "monde" représenté
+par le programme - on peut par exemple y représenter la position
+des objets via un tuple ou mieux, un <code>data type</code>.</p></div>
+<div class="paragraph"><p>De la même façon, on peut rajouter des interactions : chaque
+intéraction produit un événement.</p></div></aside></section></section>
+<section id="comment_a_fonctionne"><h2>Comment ça fonctionne</h2><div class="ulist"><ul><li><p>Codemirror : éditeur de texte en JavaScript</p></li><li><p>Haskell API : librairie de graphisme vectoriel</p></li><li><p>Compilateur : ghcjs exécuté sur le serveur</p></li></ul></div>
+<div class="imageblock" style=""><img src="images/codeworld-architecture.png" alt="codeworld architecture"></div>
+<aside class="notes"><div class="paragraph"><p>Le code est envoyé au serveur qui le compile en Javascript
+avec <code>ghcjs</code>. Un hash est retourné, et utilisé pour charger
+et exécuter le code Javascript.</p></div></aside></section>
+<section id="conclusion"><h2>Conclusion</h2><div class="ulist"><ul><li><p>Pas de boilerplate</p></li><li><p>Plutôt simple</p></li><li><p>Bien documenté</p></li><li><p>Disponible tout de suite</p></li><li><p>Open source</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>CodeWorld est réalisé avec bon sens.</p></div>
+<div class="ulist"><ul><li><p>Des alternatives comme reactive-turtle (Scala et Akka pour enfants)
+sont un peu complexes pour des jeunes esprits à mon avis (flatmap&#8230;&#8203;)</p></li><li><p>La documentation couvre pratiquement l&#8217;ensemble de ce qui est disponible
+et utilise un langage simple, pas difficile à comprendre.</p></li><li><p>Cette plateforme est "orientée" dans le bon sens imho (fp)</p></li></ul></div></aside></section>
+<section><section id="alternatives"><h2>Alternatives</h2></section><section id="reactive_turtle"><h2>Reactive Turtle</h2><div class="listingblock"><div class="content"><pre class="highlight"><code data-noescape class="scala language-scala">trait Shapes {
+  type Shape = Seq[Command]
+  def square(size: Int): Shape = {
+      (1 to 4).flatMap(_ =&gt; Seq(Forward(size), Right(90)))
+  }
+  def spiral(size: Int): Shape = {
+      (1 to 100).flatMap(a =&gt; Seq(Forward(size), Right(110 - a)))
+  }
+  def circle(size: Int): Shape = {
+      (1 to 90).flatMap(a =&gt; Seq(Forward(size), Right(4)))
+  }
+}</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Expliquer flatMap à un enfant de 6 sans est un peu compliqué.</p></div></aside></section><section id="kojo"><h2>Kojo</h2><div class="imageblock" style=""><img src="images/kojo-example.png" alt="kojo"></div>
+<aside class="notes"><div class="paragraph"><p>Il existe aussi une flateforme basée sur Scala : Kojo.
+Elle est un poil trop impérative à mon sens (tortue, etc).
+(dans l&#8217;exemple ci-dessus, on voit bien le côté séquentiel
+ encore une fois)</p></div></aside></section><section id="questions"><h2>Questions</h2></section><section id="merci"><h2>Merci</h2><div class="ulist"><ul><li><p><a href="https://code.world/" class="bare">https://code.world/</a> - Chris Smith</p></li><li><p>SLUG</p></li><li><p>scala.io</p></li><li><p>Vous!</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>C.D. smith created this world. Obviously there would be no presentation without him.
+My colleagues who put me on this track. had the patience to listen to my digressions.
+SLUG for letting me do a first attempt.
+My familly who had the patience to let me time.
+You for you time.</p></div></aside></section></section>
+<section><section id="extra"><h2>Extra</h2></section><section id="going_further"><h2>Going further</h2><div class="ulist"><ul><li><p>Interacting with users</p></li><li><p>Multiplayer games</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Interaction with users won&#8217;t be covered here; examples in the official documentation.</p></div></aside></section><section id="extra_2"><h2>extra</h2><div class="ulist"><ul><li><p>Security</p></li><li><p>Limitations</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Dangerous code (through some languages templates) is checked.
+It seems that it&#8217;s not possible to share core between different projects without copy/paste.</p></div></aside></section><section id="sdl_coordinate_system"><h2>SDL coordinate system</h2><div class="imageblock" style=""><img src="images/sdl-coordinate-system.png" alt="SDL coordinate system"></div>
+<aside class="notes"><div class="paragraph"><p>This is an example of a "traditional" coordinate system, here SDL.</p></div></aside></section><section id="credits"><h2>Credits</h2><div class="paragraph"><p>Function game : Brent Yorgey - <a href="https://byorgey.wordpress.com/2018/05/06/conversations-with-a-six-year-old-on-functional-programming/" class="bare">https://byorgey.wordpress.com/2018/05/06/conversations-with-a-six-year-old-on-functional-programming/</a></p></div>
+<div class="paragraph"><p>Image credits :</p></div>
+<div class="ulist"><ul><li><p>scratch : <a href="https://drbadgr.wordpress.com/2014/09/29/phil-bagge-course-notes-scratch-for-programming-in-the-new-curriculum/" class="bare">https://drbadgr.wordpress.com/2014/09/29/phil-bagge-course-notes-scratch-for-programming-in-the-new-curriculum/</a></p></li><li><p>coddy : <a href="https://coddy-free.fr.aptoide.com" class="bare">https://coddy-free.fr.aptoide.com</a></p></li><li><p>frying pan : <a href="https://workingoutsolutions.wordpress.com/2011/10/28/camping-frying-pans-best-outdoor-cooking-utensil/" class="bare">https://workingoutsolutions.wordpress.com/2011/10/28/camping-frying-pans-best-outdoor-cooking-utensil/</a></p></li><li><p>macao mystery beverage: <a href="https://www.isidorsfugue.com/2012/08/mystery-beverage-vending-machine-in.html" class="bare">https://www.isidorsfugue.com/2012/08/mystery-beverage-vending-machine-in.html</a></p></li></ul></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'serif',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script></body></html>
